@@ -1,0 +1,53 @@
+sudo docker exec -it ultrasonic-flowmeter-reader-1 sh
+
+find / -name "*.db" 2>/dev/null
+
+# find / -name "*.db" 2>/dev/null
+/data/flow_data.db
+
+sqlite3 /data/flow_data.db
+
+.tables
+
+Query Data:   SELECT * FROM flow_readings ORDER BY id DESC LIMIT 10;
+
+Drop table:  DROP TABLE flow_readings;
+
+
+aeon key:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0Z253dGh2ZmR6b3Fjb2RzanB5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA1MTg0NTksImV4cCI6MjA2NjA5NDQ1OX0.OSVxYkW-AjyJuWHTPm-kHjE6-YDKzAXOymfZG63JYGY
+
+SELECT column_name, data_type 
+FROM information_schema.columns 
+WHERE table_name = 'flow_data';
+
+-- Enable RLS if not already enabled
+ALTER TABLE flow_data ENABLE ROW LEVEL SECURITY;
+
+-- Allow ALL operations for ALL users
+CREATE POLICY "Allow all SELECT access" 
+ON flow_data FOR SELECT USING (true);
+
+CREATE POLICY "Allow all INSERT access" 
+ON flow_data FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "Allow all UPDATE access" 
+ON flow_data FOR UPDATE USING (true) WITH CHECK (true);
+
+CREATE POLICY "Allow all DELETE access" 
+ON flow_data FOR DELETE USING (true);
+
+
+SHA256:UkbInLpJNdYLb5f/yV03x3m7cBadF4xNkzvT+z5m0uE tunjrsanaung@gmail.com
+
+
+
+.env file
+
+# Supabase credentials
+SUPABASE_URL=https://htgnwthvfdzoqcodsjpy.supabase.co
+SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0Z253dGh2ZmR6b3Fjb2RzanB5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA1MTg0NTksImV4cCI6MjA2NjA5NDQ1OX0.OSVxYkW-AjyJuWHTPm-kHjE6-YDKzAXOymfZG63JYGY
+
+# Serial port configuration (can override in docker-compose)
+SERIAL_PORT=/dev/ttyUSB0
+BAUD_RATE=9600
+BUFFER_SIZE=1000
