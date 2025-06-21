@@ -1,0 +1,28 @@
+services:
+  flow_reader:
+    build: .
+    environment:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+      - TZ=Asia/Bangkok
+      - SERIAL_PORT=/dev/ttyUSB0
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+    command: python read_and_store.py
+
+  temp_reader:
+    build: .
+    environment:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+      - TZ=Asia/Bangkok
+      - SERIAL_PORT_TEMP=/dev/ttyUSB1
+    devices:
+      - "/dev/ttyUSB1:/dev/ttyUSB1"
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+    command: python read_and_store_temp.py
